@@ -29,9 +29,30 @@
 		5241F79A2D77530B00FF2EB8 /* SwiftUIBootcampUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftUIBootcampUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5241F7E42D77647B00FF2EB8 /* Exceptions for "SwiftUIBootcamp" folder in "SwiftUIBootcampTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ViewModelBootcamp.swift,
+			);
+			target = 5241F78F2D77530B00FF2EB8 /* SwiftUIBootcampTests */;
+		};
+		5241F7E52D77647B00FF2EB8 /* Exceptions for "SwiftUIBootcamp" folder in "SwiftUIBootcampUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ViewModelBootcamp.swift,
+			);
+			target = 5241F7992D77530B00FF2EB8 /* SwiftUIBootcampUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5241F7822D77530400FF2EB8 /* SwiftUIBootcamp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5241F7E42D77647B00FF2EB8 /* Exceptions for "SwiftUIBootcamp" folder in "SwiftUIBootcampTests" target */,
+				5241F7E52D77647B00FF2EB8 /* Exceptions for "SwiftUIBootcamp" folder in "SwiftUIBootcampUITests" target */,
+			);
 			path = SwiftUIBootcamp;
 			sourceTree = "<group>";
 		};

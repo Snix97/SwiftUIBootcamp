@@ -23,51 +23,80 @@ struct FruitModel: Identifiable {
     let count: Int
 }
 
-struct ViewModelBootcamp: View {
+//ObservableObject protocol indicated that this class is Observable
+class FruitViewModel: ObservableObject {
     
-    @State var fruitArray: [FruitModel] = []
+    /*Use @Published because we are in a class, but it does the same as @State.
+     If the fruitArray gets changed it notifies the viewModel that updates are
+     needed so needs to publish the changes
+     */
+    @Published var fruitArray: [FruitModel] = []
+    @Published var isLoading: Bool = false
     
-    var body: some View {
-        NavigationView {
-            List {
-                ForEach(fruitArray) { fruit in
-                    HStack {
-                        Text("\(fruit.count)")
-                            .foregroundColor(.red)
-                        Text(fruit.name)
-                            .font(.headline)
-                            .fontWeight(.semibold)
-                        
-                    }
-                }
-                .onDelete(perform: deleteFruit)
-                }
-            }
-            .listStyle(DefaultListStyle())
-            .navigationTitle("Fruit List")
-            .onAppear {
-                getFruits()
-            }
-            
-        }
-       
     func getFruits() {
         let fruit1 = FruitModel(name: "Apples", count: 6)
         let fruit2 = FruitModel(name: "Pears", count: 1)
         let fruit3 = FruitModel(name: "Orange", count: 2)
         let fruit4 = FruitModel(name: "Banana", count: 5)
         
-        fruitArray.append(fruit1)
-        fruitArray.append(fruit2)
-        fruitArray.append(fruit3)
-        fruitArray.append(fruit4)
+        //Simulate time consumming network call
+        isLoading = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.fruitArray.append(fruit1)
+            self.fruitArray.append(fruit2)
+            self.fruitArray.append(fruit3)
+            self.fruitArray.append(fruit4)
+            
+            self.isLoading = false
+        }
+        
     }
     
     func deleteFruit(index: IndexSet) {
         fruitArray.remove(atOffsets: index)
     }
-    
 }
+
+struct ViewModelBootcamp: View {
+    
+   //Can only use @State when your in a Struct View NOT a class
+   // @State var fruitArray: [FruitModel] = []
+    
+    /*@ObservedObject used to indicate that if the VM changes we will need to
+     update our view. The VM now contains all the logic so cleaner View code, it just deals with the UI.
+     */
+    @ObservedObject var fruitViewModel: FruitViewModel = FruitViewModel()
+    
+    var body: some View {
+        NavigationView {
+            List {
+                
+                if fruitViewModel.isLoading {
+                    ProgressView()
+                } else {
+                    ForEach(fruitViewModel.fruitArray) { fruit in
+                        HStack {
+                            Text("\(fruit.count)")
+                                .foregroundColor(.red)
+                            Text(fruit.name)
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                            
+                        }
+                    }
+                    .onDelete(perform: fruitViewModel.deleteFruit)
+                }
+            }
+            .listStyle(DefaultListStyle())
+            .navigationTitle("Fruit List")
+            .onAppear {
+                fruitViewModel.getFruits()
+            }
+            
+        }
+    }
+}
+
 
 #Preview {
     ViewModelBootcamp()
